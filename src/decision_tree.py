@@ -56,9 +56,8 @@ class DecisionTree:
         """
         Classification and Regression Tree implementation.
         """
-    
+
     def _cart_cost():
         """
         """
         pass
-        
