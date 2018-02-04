@@ -20,7 +20,7 @@ class DecisionTree:
         """
         pass
 
-    def train(X, y, method='entropy'):
+    def train(self, X, y, method='entropy'):
         """
         """
         pass
@@ -30,17 +30,17 @@ class DecisionTree:
         """
         pass
 
-    def _gini(labels):
+    def _gini(self, labels):
         """
         Calculates the gini impurity for a set of labels.
         """
         total = len(labels)
         label_counts = Counter(labels).values()
-        return 1 - sum(p**2 / total
+        return 1 - sum((p / total)**2
                        for p in label_counts
                        if p)
 
-    def _entropy(labels):
+    def _entropy(self, labels):
         """
         """
         pass
