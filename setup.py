@@ -13,6 +13,5 @@ setup(
     version=0.0,
     author='Kurt Maurer',
     author_email='kurtrm@gmail.com',
-    install_requires=[],
     extras_require=extra_packages
 )
