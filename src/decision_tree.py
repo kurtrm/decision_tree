@@ -16,11 +16,6 @@ class DecisionTree:
         """
         pass
 
-    def __call__():
-        """
-        """
-        pass
-
     def train(self, X, y, method='entropy'):
         """
         """
@@ -53,11 +48,12 @@ class DecisionTree:
 
     def _id3():
         """
+
         """
         pass
 
     def _cart():
         """
+        Classification and Regression Tree implementation.
         """
         pass
-
