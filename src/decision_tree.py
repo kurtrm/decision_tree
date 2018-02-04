@@ -1,6 +1,7 @@
 """
 Module containing the DecisionTree class.
 """
+from collections import Counter
 
 
 class DecisionTree:
@@ -9,7 +10,7 @@ class DecisionTree:
     or entropy (information gain).
     """
 
-    def __init__(self, method='entropy'):
+    def __init__(self):
         """
         """
         pass
@@ -19,7 +20,7 @@ class DecisionTree:
         """
         pass
 
-    def train(X, y):
+    def train(X, y, method='entropy'):
         """
         """
         pass
@@ -31,8 +32,13 @@ class DecisionTree:
 
     def _gini(labels):
         """
+        Calculates the gini impurity for a set of labels.
         """
-        pass
+        total = len(labels)
+        label_counts = Counter(labels).values()
+        return 1 - sum(p**2 / total
+                       for p in label_counts
+                       if p)
 
     def _entropy(labels):
         """
