@@ -48,7 +48,7 @@ class DecisionTree:
 
     def _id3():
         """
-
+        Builds a decision tree using the ID3 algorithm.
         """
         pass
 
@@ -56,4 +56,9 @@ class DecisionTree:
         """
         Classification and Regression Tree implementation.
         """
+    
+    def _cart_cost():
+        """
+        """
         pass
+        
