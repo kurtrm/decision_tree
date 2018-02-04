@@ -2,6 +2,7 @@
 Module containing the DecisionTree class.
 """
 from collections import Counter
+from math import log2
 
 
 class DecisionTree:
@@ -42,8 +43,13 @@ class DecisionTree:
 
     def _entropy(self, labels):
         """
+        Calculates entropy for a set of labels.
         """
-        pass
+        total = len(labels)
+        label_counts = Counter(labels).values()
+        return -sum((p / total) * log2(p / total)
+                    for p in label_counts
+                    if p)
 
     def _id3():
         """
