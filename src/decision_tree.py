@@ -74,7 +74,7 @@ class DecisionTree:
         """
         pass
 
-    def _cart():
+    def _cart(self, labeled_data):
         """
         Classification and Regression Tree implementation.
         """
@@ -105,9 +105,9 @@ class DecisionTree:
                 cost_min = cost
                 minim = []
                 minim.append(x)
-                left_node = [labeled_data[idx] for idx in left]
-                right_node = [labeled_data[idx] for idx in right]
+                left_samples = [labeled_data[idx] for idx in left]
+                right_samples = [labeled_data[idx] for idx in right]
             elif cost == cost_min:
                 minim.append(x)
         avg_minimums = sum(minim) / len(minim)
-        return avg_minimums, left_node, right_node
+        return avg_minimums, left_samples, right_samples
