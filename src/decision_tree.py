@@ -11,7 +11,7 @@ class Node:
     information on for further evaluation to other nodes.
     """
 
-    def __init__(self, threshold, samples, values, classification):
+    def __init__(self, threshold, samples, values, classification, gini=None):
         """
         """
         self.threshold = threshold
@@ -20,6 +20,7 @@ class Node:
         self.classification = classification
         self.left = None
         self.right = None
+        self.gini = None
 
 
 class DecisionTree:
@@ -28,10 +29,11 @@ class DecisionTree:
     or entropy (information gain).
     """
 
-    def __init__(self):
+    def __init__(self, max_depth=0):
         """
         """
         self.root = None
+        self.max_depth = max_depth
         
 
     def train(self, X, y, method='gini'):
@@ -76,6 +78,9 @@ class DecisionTree:
         """
         # Starts with all the data and runs the cost function on each feature to get the best starting split.
         # 
+
+        depth = 0
+        labels = list(set([row[1] for row in labeled_data]))
         if self._gini([label[1] for label in labeled_data]) == 0:
             return None
 
@@ -84,6 +89,21 @@ class DecisionTree:
             gini_calculations = self._gini_cost(labeled_data, feature)
             if gini_calculations[0] < lowest_cost:
                 lowest_cost, threshold, left_samples, right_samples = gini_calculations
+
+        if self.root is None:
+            self.root = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], self._gini(labeled_data))
+            node = self.root
+        else:
+            node = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], self._gini(labeled_data))
+
+        if depth < self.max_depth:
+            depth += 1
+            node.left = self._cart(left_samples)
+            node.right = self._cart(right_samples)
+        else:
+            return node
+
+
 
 
 
