@@ -18,13 +18,8 @@ class Node:
         self.samples = samples
         self.values = values
         self.classification = classification
-        self.gini = self._gini(values)
         self.left = None
         self.right = None
-
-
-
-
 
 
 class DecisionTree:
@@ -36,9 +31,10 @@ class DecisionTree:
     def __init__(self):
         """
         """
-        pass
+        self.root = None
+        
 
-    def train(self, X, y, method='entropy'):
+    def train(self, X, y, method='gini'):
         """
         """
         pass
@@ -78,6 +74,21 @@ class DecisionTree:
         """
         Classification and Regression Tree implementation.
         """
+        # Starts with all the data and runs the cost function on each feature to get the best starting split.
+        # 
+        if self._gini([label[1] for label in labeled_data]) == 0:
+            return None
+
+        lowest_cost = float('inf')
+        for feature in labeled_data[0][0].keys():
+            gini_calculations = self._gini_cost(labeled_data, feature)
+            if gini_calculations[0] < lowest_cost:
+                lowest_cost, threshold, left_samples, right_samples = gini_calculations
+
+
+
+
+
 
     def _gini_cost(self, labeled_data, feature_name):
         """
@@ -110,4 +121,4 @@ class DecisionTree:
             elif cost == cost_min:
                 minim.append(x)
         avg_minimums = sum(minim) / len(minim)
-        return avg_minimums, left_samples, right_samples
+        return cost_min, avg_minimums, left_samples, right_samples
