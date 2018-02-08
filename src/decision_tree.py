@@ -29,12 +29,11 @@ class DecisionTree:
     or entropy (information gain).
     """
 
-    def __init__(self, max_depth=0):
+    def __init__(self, max_depth=1):
         """
         """
         self.root = None
         self.max_depth = max_depth
-        
 
     def train(self, X, y, method='gini'):
         """
@@ -79,10 +78,7 @@ class DecisionTree:
         # Starts with all the data and runs the cost function on each feature to get the best starting split.
         # 
 
-        depth = 0
-        labels = list(set([row[1] for row in labeled_data]))
-        if self._gini([label[1] for label in labeled_data]) == 0:
-            return None
+        self._depth = 0
 
         lowest_cost = float('inf')
         for feature in labeled_data[0][0].keys():
@@ -96,19 +92,12 @@ class DecisionTree:
         else:
             node = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], self._gini(labeled_data))
 
-        if depth < self.max_depth:
-            depth += 1
+        if self._depth < self.max_depth:
+            self._depth += 1
             node.left = self._cart(left_samples)
             node.right = self._cart(right_samples)
         else:
             return node
-
-
-
-
-
-
-
 
     def _gini_cost(self, labeled_data, feature_name):
         """
