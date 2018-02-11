@@ -40,15 +40,29 @@ class DecisionTree:
         """
         """
         if method == 'gini':
-            return self._cart(labeled_data)
+            self._cart(labeled_data)
         elif method == 'entropy':
             pass
 
     def predict(self, data):
         """
-        Bsae
+        This will take a list of dictionaries and return a list of predicted labels.
         """
-        pass
+        predictions = []
+        start_node = self.root
+        for piece in data:
+            current_node = start_node
+            while current_node.feature:
+                    if piece[current_node.feature] <= current_node.threshold:
+                        current_node = current_node.left
+                    else:
+                        current_node = current_node.right
+            predictions.append(current_node.classification)
+
+        return predictions
+
+
+
 
     def _gini(self, labels):
         """
