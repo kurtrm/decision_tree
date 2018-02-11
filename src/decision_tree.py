@@ -35,10 +35,13 @@ class DecisionTree:
         self.root = None
         self.max_depth = max_depth
 
-    def train(self, X, y, method='gini'):
+    def train(self, labeled_data, method='gini'):
         """
         """
-        pass
+        if method == 'gini':
+            self._cart(labeled_data)
+        elif method == 'entropy':
+            pass
 
     def predict():
         """
