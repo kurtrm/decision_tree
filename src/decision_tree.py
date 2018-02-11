@@ -11,13 +11,14 @@ class Node:
     information on for further evaluation to other nodes.
     """
 
-    def __init__(self, threshold, samples, values, classification, gini=None):
+    def __init__(self, threshold, samples_count, values, classification, feature, gini=None):
         """
         """
         self.threshold = threshold
-        self.samples = samples
+        self.samples_count = samples_count
         self.values = values
         self.classification = classification
+        self.feature = feature
         self.left = None
         self.right = None
         self.gini = gini
@@ -29,7 +30,7 @@ class DecisionTree:
     or entropy (information gain).
     """
 
-    def __init__(self, max_depth=1):
+    def __init__(self, max_depth=2):
         """
         """
         self.root = None
@@ -43,8 +44,9 @@ class DecisionTree:
         elif method == 'entropy':
             pass
 
-    def predict():
+    def predict(self, data):
         """
+        Bsae
         """
         pass
 
@@ -99,19 +101,20 @@ class DecisionTree:
             for key, value in counts.items():
                 if counts[key] == max_val:
                     classification = key
-            return Node(None, len(labeled_data), labeled_data, classification, self._gini(labels))
+            return Node(None, len(labeled_data), labeled_data, classification, None, self._gini(labels))
 
         lowest_cost = float('inf')
         for feature in labeled_data[0][0].keys():
             gini_calculations = self._gini_cost(labeled_data, feature)
             if gini_calculations[0] < lowest_cost:
                 lowest_cost, threshold, left_samples, right_samples = gini_calculations
+                chosen_feature = feature
 
         if self.root is None:
-            self.root = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], self._gini(labels))
+            self.root = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], chosen_feature, self._gini(labels))
             node = self.root
         else:
-            node = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], self._gini(labels))
+            node = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], chosen_feature, self._gini(labels))
 
         if current_depth < self.max_depth:
             current_depth += 1
@@ -122,6 +125,9 @@ class DecisionTree:
     def _gini_cost(self, labeled_data, feature_name):
         """
         Calculate the cost function as part of the CART algorithm.
+
+        For continuous data, multiplying by 100 then dividing the individual numbers by 100 was an operation
+        chosen arbitrarily to find the best number to split the data on. It's a magic number for sure.
         """
         minim = []
         cost_min = float('inf')
