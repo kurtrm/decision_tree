@@ -11,17 +11,17 @@ class Node:
     information on for further evaluation to other nodes.
     """
 
-    def __init__(self, threshold, samples_count, values, classification, feature, gini=None):
+    def __init__(self, samples_count, values, classification, threshold=None, feature=None, gini=None):
         """
         """
-        self.threshold = threshold
         self.samples_count = samples_count
         self.values = values
         self.classification = classification
+        self.threshold = threshold
         self.feature = feature
+        self.gini = gini
         self.left = None
         self.right = None
-        self.gini = gini
 
 
 class DecisionTree:
@@ -40,7 +40,7 @@ class DecisionTree:
         """
         """
         if method == 'gini':
-            self._cart(labeled_data)
+            return self._cart(labeled_data)
         elif method == 'entropy':
             pass
 
@@ -87,21 +87,21 @@ class DecisionTree:
         """
         pass
 
-    def _cart(self, labeled_data, depth=0, gini_split_treshold=.25):
+    def _cart(self, labeled_data, depth=0, gini_split_threshold=.25):
         """
         Classification and Regression Tree implementation.
         """
         # Starts with all the data and runs the cost function on each feature to get the best starting split.
         current_depth = depth
         labels = [label[1] for label in labeled_data]
-        gini_threshold = gini_split_treshold * self._max_gini(labels)
+        gini_threshold = gini_split_threshold * self._max_gini(labels)
         if depth >= self.max_depth or self._gini(labels) <= gini_threshold:
             counts = Counter(labels)
             max_val = max(counts.values())
             for key, value in counts.items():
                 if counts[key] == max_val:
                     classification = key
-            return Node(None, len(labeled_data), labeled_data, classification, None, self._gini(labels))
+            return Node(len(labeled_data), labeled_data, classification, gini=self._gini(labels))
 
         lowest_cost = float('inf')
         for feature in labeled_data[0][0].keys():
@@ -111,15 +111,15 @@ class DecisionTree:
                 chosen_feature = feature
 
         if self.root is None:
-            self.root = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], chosen_feature, self._gini(labels))
+            self.root = Node(len(labeled_data), labeled_data, left_samples[0][1], threshold, chosen_feature, self._gini(labels))
             node = self.root
         else:
-            node = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], chosen_feature, self._gini(labels))
+            node = Node(len(labeled_data), labeled_data, left_samples[0][1], threshold, chosen_feature, self._gini(labels))
 
         if current_depth < self.max_depth:
             current_depth += 1
-            node.left = self._cart(left_samples, current_depth)
-            node.right = self._cart(right_samples, current_depth)
+            node.left = self._cart(left_samples, current_depth, gini_split_threshold)
+            node.right = self._cart(right_samples, current_depth, gini_split_threshold)
         return node
 
     def _gini_cost(self, labeled_data, feature_name):
