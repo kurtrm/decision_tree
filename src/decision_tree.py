@@ -20,7 +20,7 @@ class Node:
         self.classification = classification
         self.left = None
         self.right = None
-        self.gini = None
+        self.gini = gini
 
 
 class DecisionTree:
@@ -65,20 +65,38 @@ class DecisionTree:
                     for p in label_counts
                     if p)
 
+    def _max_gini(self, labels):
+        """
+        This function used to determine if CART should make a node a leaf node depending on
+        how close the gini impurity is to the theoretical max. The max can be represented as follows:
+        a_n = 1 - 1/x, x >= 1
+
+        For a given set of labels, the gini impurity will approach the maximum.
+        """
+        num_labels = len(Counter(labels))
+        return 1 - 1/num_labels if num_labels else 0
+
     def _id3():
         """
         Builds a decision tree using the ID3 algorithm.
         """
         pass
 
-    def _cart(self, labeled_data):
+    def _cart(self, labeled_data, depth=0, gini_split_treshold=.25):
         """
         Classification and Regression Tree implementation.
         """
         # Starts with all the data and runs the cost function on each feature to get the best starting split.
-        # 
-
-        self._depth = 0
+        current_depth = depth
+        labels = [label[1] for label in labeled_data]
+        gini_threshold = gini_split_treshold * self._max_gini(labels)
+        if depth >= self.max_depth or self._gini(labels) <= gini_threshold:
+            counts = Counter(labels)
+            max_val = max(counts.values())
+            for key, value in counts.items():
+                if counts[key] == max_val:
+                    classification = key
+            return Node(None, len(labeled_data), labeled_data, classification, self._gini(labels))
 
         lowest_cost = float('inf')
         for feature in labeled_data[0][0].keys():
@@ -87,17 +105,16 @@ class DecisionTree:
                 lowest_cost, threshold, left_samples, right_samples = gini_calculations
 
         if self.root is None:
-            self.root = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], self._gini(labeled_data))
+            self.root = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], self._gini(labels))
             node = self.root
         else:
-            node = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], self._gini(labeled_data))
+            node = Node(threshold, len(labeled_data), labeled_data, left_samples[0][1], self._gini(labels))
 
-        if self._depth < self.max_depth:
-            self._depth += 1
-            node.left = self._cart(left_samples)
-            node.right = self._cart(right_samples)
-        else:
-            return node
+        if current_depth < self.max_depth:
+            current_depth += 1
+            node.left = self._cart(left_samples, current_depth)
+            node.right = self._cart(right_samples, current_depth)
+        return node
 
     def _gini_cost(self, labeled_data, feature_name):
         """
