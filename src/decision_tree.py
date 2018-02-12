@@ -63,7 +63,7 @@ class DecisionTree:
         """
         Instantiate a decision tree with a default depth of 2.
         """
-        if self.max_depth <= 0 or not isinstance(self.max_depth, int):
+        if max_depth <= 0 or not isinstance(max_depth, int):
             raise ValueError('max_depth must be '
                              'an integer greater than zero')
         self.max_depth = max_depth
