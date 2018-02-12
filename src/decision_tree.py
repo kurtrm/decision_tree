@@ -11,8 +11,12 @@ class Node:
     information on for further evaluation to other nodes.
     """
 
-    def __init__(self, samples_count, values, classification, threshold=None, feature=None, gini=None):
+    def __init__(self, samples_count, values, classification,
+                 threshold=None,
+                 feature=None,
+                 gini=None):
         """
+        Initialize a node.
         """
         self.samples_count = samples_count
         self.values = values
@@ -51,8 +55,8 @@ class Node:
 
 class DecisionTree:
     """
-    A crude implentation of a decision tree that can either use the Gini index
-    or entropy (information gain).
+    A crude implementation of a decision tree that, for the time being,
+    uses the gini index to create a binary decision tree.
     """
 
     def __init__(self, max_depth=2):
@@ -81,7 +85,8 @@ class DecisionTree:
 
     def predict(self, data):
         """
-        This will take a list of dictionaries and return a list of predicted labels.
+        This will take a list of dictionaries and return a list of
+        predicted labels.
         """
         predictions = []
         start_node = self.root
@@ -118,8 +123,9 @@ class DecisionTree:
 
     def _max_gini(self, labels):
         """
-        This function used to determine if CART should make a node a leaf node depending on
-        how close the gini impurity is to the theoretical max. The max can be represented as follows:
+        This function used to determine if CART should make a node a leaf node
+        depending on how close the gini impurity is to the theoretical max.
+        The max can be represented as follows:
         a_n = 1 - 1/x, x >= 1
 
         For a given set of labels, the gini impurity will approach the maximum
@@ -174,15 +180,16 @@ class DecisionTree:
             depth += 1
             node.left = self._cart(left_samples, gini_split_threshold, depth)
             node.right = self._cart(right_samples, gini_split_threshold, depth)
-        
+
         return node
 
     def _gini_cost(self, labeled_data, feature_name):
         """
         Calculate the cost function as part of the CART algorithm.
 
-        For continuous data, multiplying by 100 then dividing the individual numbers by 100 was an operation
-        chosen arbitrarily to find the best number to split the data on. It's a magic number for sure.
+        For continuous data, multiplying by 100 then dividing the individual
+        numbers by 100 was an operation chosen arbitrarily to find the best
+        number to split the data on. It's a magic number for sure.
         """
         minim = []
         cost_min = float('inf')
