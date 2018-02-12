@@ -36,11 +36,11 @@ class DecisionTree:
         self.root = None
         self.max_depth = max_depth
 
-    def train(self, labeled_data, method='gini'):
+    def train(self, labeled_data, method='gini', gini_split_threshold=.25):
         """
         """
         if method == 'gini':
-            self._cart(labeled_data)
+            self._cart(labeled_data, gini_split_threshold=gini_split_threshold)
         elif method == 'entropy':
             pass
 
@@ -60,9 +60,6 @@ class DecisionTree:
             predictions.append(current_node.classification)
 
         return predictions
-
-
-
 
     def _gini(self, labels):
         """
@@ -90,7 +87,8 @@ class DecisionTree:
         how close the gini impurity is to the theoretical max. The max can be represented as follows:
         a_n = 1 - 1/x, x >= 1
 
-        For a given set of labels, the gini impurity will approach the maximum.
+        For a given set of labels, the gini impurity will approach the maximum
+        the more spread out the data.
         """
         num_labels = len(Counter(labels))
         return 1 - 1/num_labels if num_labels else 0
@@ -101,19 +99,26 @@ class DecisionTree:
         """
         pass
 
-    def _cart(self, labeled_data, depth=0, gini_split_threshold=.25):
+    def _cart(self, labeled_data, gini_split_threshold, depth=0):
         """
-        Classification and Regression Tree implementation.
+        Classification and Regression Tree (CART) implementation.
+
+        This version of the algorithm only works with continuous data. It will
+        search for the split in the data that produces the smallest gini value
+        of the available features. For a the number of unique features, there
+        exists a maximum of the gini. We use this value to determine what the
+        maximum allowable gini valuable to make a node a leaf node. For
+        example, if we pass 0 as the threshold, it will continue to split
+        the data recursively until it hits the max_depth or the gini hits
+        zero. That's not very practical.
         """
-        # Starts with all the data and runs the cost function on each feature to get the best starting split.
-        current_depth = depth
         labels = [label[1] for label in labeled_data]
         gini_threshold = gini_split_threshold * self._max_gini(labels)
         if depth >= self.max_depth or self._gini(labels) <= gini_threshold:
             counts = Counter(labels)
             max_val = max(counts.values())
             for key, value in counts.items():
-                if counts[key] == max_val:
+                if value == max_val:
                     classification = key
             return Node(len(labeled_data), labeled_data, classification, gini=self._gini(labels))
 
@@ -130,10 +135,11 @@ class DecisionTree:
         else:
             node = Node(len(labeled_data), labeled_data, left_samples[0][1], threshold, chosen_feature, self._gini(labels))
 
-        if current_depth < self.max_depth:
-            current_depth += 1
-            node.left = self._cart(left_samples, current_depth, gini_split_threshold)
-            node.right = self._cart(right_samples, current_depth, gini_split_threshold)
+        if depth < self.max_depth:
+            depth += 1
+            node.left = self._cart(left_samples, gini_split_threshold, depth)
+            node.right = self._cart(right_samples, gini_split_threshold, depth)
+        
         return node
 
     def _gini_cost(self, labeled_data, feature_name):
