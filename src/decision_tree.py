@@ -93,7 +93,7 @@ class DecisionTree:
         if method == 'gini':
             self._cart(labeled_data, gini_split_threshold=gini_split_threshold)
         elif method == 'entropy':
-            pass
+            raise NotImplementedError('This feature is under construction')
 
     def predict(self, data):
         """
