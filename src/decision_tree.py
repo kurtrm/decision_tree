@@ -33,11 +33,21 @@ class DecisionTree:
     def __init__(self, max_depth=2):
         """
         """
-        self.root = None
         self.max_depth = max_depth
+        self.root = None
 
     def train(self, labeled_data, method='gini', gini_split_threshold=.25):
         """
+        labeled_data is an iterable containing iterables of a dictionary and
+        a corresponding label. For example:
+        data = [
+            ({'feature_1': 3, 'feature_2': 4}, 'label_2'),
+            ({'feature_1': 2, 'feature_2': 3}, 'label_4')
+        ]
+
+        Note: Only works with the gini method right now.
+
+        The gini_split_threshold default is arbitrary.
         """
         if method == 'gini':
             self._cart(labeled_data, gini_split_threshold=gini_split_threshold)
