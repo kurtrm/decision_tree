@@ -2,7 +2,7 @@
 Module to test the decision tree class.
 """
 import pytest
-
+import random
 
 @pytest.fixture
 def decision_tree():
@@ -14,6 +14,13 @@ def decision_tree():
     tree = DecisionTree()
     tree.train(iris_data)
     return tree
+
+
+table = []
+for x in range(250):
+    randy = random.randint(1, 101)
+    table.append((randy, 1 - 1/randy))
+table.append((0, 0))
 
 
 def test_instantiation():
@@ -35,3 +42,10 @@ def test_instantiation_with_depth():
         for val in [-1, 0, .5]:
             tree = DecisionTree(max_depth=val)
 
+
+@pytest.mark.parametrize('val, expected, decision_tree', table)
+def test_max_gini(val, expected):
+    """
+    Test that max_gini gives the correct number in the sequence.
+    """
+    assert decision_tree._max_gini(val) == expected
