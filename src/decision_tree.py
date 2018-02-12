@@ -27,7 +27,7 @@ class Node:
         """
         Return a simple representation of a node object.
         """
-        return '<[Node] gini={} feature={}>'.format(self.gini,
+        return '<[Node] gini={:.3f} feature={}>'.format(self.gini,
                                                     self.feature)
 
     def __str__(self):
@@ -35,16 +35,17 @@ class Node:
         Return string representation of a node. Offers more info than
         repr.
         """
+        values = list(Counter([value[1] for value in self.values]).values())
         return """
-    {} <= {}
-    gini = {}
+    {} <= {:.3f}
+    gini = {:.3f}
     samples = {}
     values = {}
     class = {}""".format(self.feature,
                          self.threshold,
                          self.gini,
                          self.samples_count,
-                         self.values,
+                         values,
                          self.classification)
 
 
