@@ -93,7 +93,7 @@ class DecisionTree:
         if method == 'gini':
             self._cart(labeled_data, gini_split_threshold=gini_split_threshold)
         elif method == 'entropy':
-            raise NotImplementedError('This feature is under construction')
+            self._id3(labeled_data)
 
     def predict(self, data):
         """
@@ -146,11 +146,11 @@ class DecisionTree:
         num_labels = len(Counter(labels))
         return 1 - 1/num_labels if num_labels else 0
 
-    def _id3():
+    def _id3(self, labeled_data):
         """
         Builds a decision tree using the ID3 algorithm.
         """
-        pass
+        raise NotImplementedError('This feature is under construction')
 
     def _cart(self, labeled_data, gini_split_threshold, depth=0):
         """
