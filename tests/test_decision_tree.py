@@ -17,10 +17,15 @@ def decision_tree():
 
 
 table = []
-for x in range(250):
+for x in range(150):
     randy = random.randint(1, 101)
     table.append((range(randy), 1 - 1/randy))
 table.append(([], 0))
+
+# gini_table = []
+# for i in range(100):
+#     new_randy = random.randint(1, 20)
+#     gini_table.append((range(new_randy), 1 - sum((p / new_randy)**2 for p in range(new_randy) if p)))
 
 
 def test_instantiation():
@@ -49,3 +54,11 @@ def test_max_gini(val, expected, decision_tree):
     Test that max_gini gives the correct number in the sequence.
     """
     assert decision_tree._max_gini(val) == expected
+
+
+# @pytest.mark.parametrize('val, expected', gini_table)
+# def test_gini(val, expected, decision_tree):
+#     """
+#     Test that gini returns the correct val.
+#     """
+#     assert decision_tree._gini(val) == expected
