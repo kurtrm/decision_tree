@@ -150,7 +150,7 @@ class DecisionTree:
         """
         Builds a decision tree using the ID3 algorithm.
         """
-        raise NotImplementedError('This feature is under construction')
+        pass
 
     def _cart(self, labeled_data, gini_split_threshold, depth=0):
         """
