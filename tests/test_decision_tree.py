@@ -19,8 +19,8 @@ def decision_tree():
 table = []
 for x in range(250):
     randy = random.randint(1, 101)
-    table.append((randy, 1 - 1/randy))
-table.append((0, 0))
+    table.append((range(randy), 1 - 1/randy))
+table.append(([], 0))
 
 
 def test_instantiation():
@@ -43,8 +43,8 @@ def test_instantiation_with_depth():
             tree = DecisionTree(max_depth=val)
 
 
-@pytest.mark.parametrize('val, expected, decision_tree', table)
-def test_max_gini(val, expected):
+@pytest.mark.parametrize('val, expected', table)
+def test_max_gini(val, expected, decision_tree):
     """
     Test that max_gini gives the correct number in the sequence.
     """
