@@ -1,6 +1,4 @@
-# decision_tree
-Attempt to implement a decision tree in Python, in addition to learning more about how to use SKLearn's implementation.
+# Simple Decision Tree
+Implementation of a decision tree in Python, in addition to learning more about how to use SKLearn's implementation.
 
-Gini Impurity:
-
-Entropy (Information Gain):
+This will return a decision tree based on the gini impurity, the entropy method is a work in progress.
