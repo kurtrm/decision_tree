@@ -23,6 +23,30 @@ class Node:
         self.left = None
         self.right = None
 
+    def __repr__(self):
+        """
+        Return a simple representation of a node object.
+        """
+        return '<[Node] gini={} feature={}>'.format(self.gini,
+                                                    self.feature)
+
+    def __str__(self):
+        """
+        Return string representation of a node. Offers more info than
+        repr.
+        """
+        return """
+    {} <= {}
+    gini = {}
+    samples = {}
+    values = {}
+    class = {}""".format(self.feature,
+                         self.threshold,
+                         self.gini,
+                         self.samples_count,
+                         self.values,
+                         self.classification)
+
 
 class DecisionTree:
     """
