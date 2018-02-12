@@ -7,8 +7,8 @@ from math import log2
 
 class Node:
     """
-    Node that contains all information required in order to make predictions and pass
-    information on for further evaluation to other nodes.
+    Node that contains all information required in order to make predictions
+    and pass information on for further evaluation to other nodes.
     """
 
     def __init__(self, samples_count, values, classification,
@@ -32,7 +32,7 @@ class Node:
         Return a simple representation of a node object.
         """
         return '<[Node] gini={:.3f} feature={}>'.format(self.gini,
-                                                    self.feature)
+                                                        self.feature)
 
     def __str__(self):
         """
@@ -61,7 +61,11 @@ class DecisionTree:
 
     def __init__(self, max_depth=2):
         """
+        Instantiate a decision tree with a default depth of 2.
         """
+        if self.max_depth <= 0 or not isinstance(self.max_depth, int):
+            raise ValueError('max_depth must be '
+                             'an integer greater than zero')
         self.max_depth = max_depth
         self.root = None
 
@@ -78,6 +82,14 @@ class DecisionTree:
 
         The gini_split_threshold default is arbitrary.
         """
+        if method not in ['gini', 'entropy']:
+            raise ValueError("method parameter must be "
+                             "either 'gini' or 'entropy'")
+
+        if gini_split_threshold < 0 or gini_split_threshold > 1:
+            raise ValueError('gini_split_threshold argument must '
+                             'be a float between 0 and 1')
+
         if method == 'gini':
             self._cart(labeled_data, gini_split_threshold=gini_split_threshold)
         elif method == 'entropy':
@@ -218,4 +230,5 @@ class DecisionTree:
             elif cost == cost_min:
                 minim.append(x)
         avg_minimums = sum(minim) / len(minim)
+
         return cost_min, avg_minimums, left_samples, right_samples
