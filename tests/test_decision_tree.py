@@ -63,3 +63,13 @@ def test_gini(val, expected, decision_tree):
     Test that gini returns the correct val.
     """
     assert decision_tree._gini(val) == expected
+
+
+def test_gini_cost(decision_tree):
+    """
+    Test the gini_cost method on the available iris data.
+    """
+    from tests.iris_petal_data import iris_data
+    gini, avg_costs, _, _ = decision_tree._gini_cost(iris_data, 'petal length (cm)')
+    assert (gini, avg_costs) == (pytest.approx(1/3, .1),
+                                 pytest.approx(2.45, .1))
