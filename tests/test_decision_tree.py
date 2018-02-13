@@ -26,6 +26,7 @@ gini_table = []
 for i in range(100):
     new_randy = random.randint(1, 20)
     gini_table.append((range(new_randy), 1 - sum((1 / new_randy)**2 for _ in range(new_randy))))
+gini_table.append(([25, 25, 75], 1 - sum((p / 125)**2 for p in [25, 25, 75])))
 
 
 def test_instantiation():
