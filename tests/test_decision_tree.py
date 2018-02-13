@@ -26,7 +26,6 @@ gini_table = []
 for i in range(100):
     new_randy = random.randint(1, 20)
     gini_table.append((range(new_randy), 1 - sum((1 / new_randy)**2 for _ in range(new_randy))))
-gini_table.append(([25, 25, 75], 1 - sum((p / 125)**2 for p in [25, 25, 75])))
 
 
 def test_instantiation():
@@ -70,6 +69,21 @@ def test_gini_cost(decision_tree):
     Test the gini_cost method on the available iris data.
     """
     from tests.iris_petal_data import iris_data
-    gini, avg_costs, _, _ = decision_tree._gini_cost(iris_data, 'petal length (cm)')
+    gini, avg_costs, _, _ = decision_tree._gini_cost(iris_data,
+                                                     'petal length (cm)')
     assert (gini, avg_costs) == (pytest.approx(1/3, .1),
                                  pytest.approx(2.45, .1))
+
+
+def test_gini_cost_child_right(decision_tree):
+    """
+    Test hte gini_cost on a child of the root node.
+    """
+    from tests.iris_petal_data import iris_data
+    _, _, left, right = decision_tree._gini_cost(iris_data,
+                                                 'petal length (cm)')
+    gini, avg_costs, _, _ = decision_tree._gini_cost(right,
+                                                     'petal width (cm)')
+    assert (gini, avg_costs) == (pytest.approx(.11, .1),
+                                 pytest.approx(1.75, .1))
+
