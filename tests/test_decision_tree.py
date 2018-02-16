@@ -108,3 +108,30 @@ def test_train_establishes_root(decision_tree):
     from src.decision_tree import Node
     decision_tree.train(iris_data)
     assert isinstance(decision_tree.root, Node)
+
+
+def test_expected_tree_shape(decision_tree):
+    """
+    Ensure nodes have None at left and right values as expected.
+    """
+    from tests.iris_petal_data import iris_data
+    decision_tree.train(iris_data)
+    assert not all([decision_tree.root.left.left,
+                   decision_tree.root.left.right,
+                   decision_tree.root.right.right.right,
+                   decision_tree.root.right.right.left,
+                   decision_tree.root.right.left.right,
+                   decision_tree.root.right.left.left])
+
+
+@pytest.fixture
+def loaded_tree():
+    """
+    Loaded tree following testing.
+    """
+    from src.decision_tree import DecisionTree
+    from tests.iris import iris_data
+    tree = DecisionTree(max_depth=2)
+    tree.train(iris_data)
+
+def test_node_attributes(decision_tree)
