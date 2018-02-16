@@ -151,3 +151,20 @@ def test_root_node_attributes(loaded_tree):
             root.left,
             root.right
         ])
+
+
+def test_left_leaf_attributes(loaded_tree):
+    """
+    Look at the left most leaf node attributes.
+    """
+    leaf = loaded_tree.root.left
+    assert all([
+            leaf.samples_count == 50,
+            leaf.values,
+            leaf.classification == 'setosa',
+            not leaf.threshold,
+            not leaf.feature,
+            leaf.gini == 0,
+            not leaf.left,
+            not leaf.right
+        ])
