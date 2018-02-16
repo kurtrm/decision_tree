@@ -130,8 +130,24 @@ def loaded_tree():
     Loaded tree following testing.
     """
     from src.decision_tree import DecisionTree
-    from tests.iris import iris_data
+    from tests.iris_petal_data import iris_data
     tree = DecisionTree(max_depth=2)
     tree.train(iris_data)
+    return tree
 
-def test_node_attributes(decision_tree)
+
+def test_root_node_attributes(loaded_tree):
+    """
+    Look at root node attributes.
+    """
+    root = loaded_tree.root
+    assert all([
+            root.samples_count == 150,
+            root.values,
+            root.classification == 'setosa',
+            root.threshold == pytest.approx(2.45, .1),
+            root.feature == 'petal length (cm)',
+            root.gini == pytest.approx(2/3, .1),
+            root.left,
+            root.right
+        ])
