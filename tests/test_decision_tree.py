@@ -99,9 +99,12 @@ def test_train_errors(decision_tree):
             decision_tree.train(iris_data, *error)
 
 
-def test_train_okay(decision_tree):
+def test_train_establishes_root(decision_tree):
     """
     Ensure we get the correct nodes back when training on the
     iris petal data set.
     """
-    pass
+    from tests.iris_petal_data import iris_data
+    from src.decision_tree import Node
+    decision_tree.train(iris_data)
+    assert isinstance(decision_tree.root, Node)
