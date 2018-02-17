@@ -4,6 +4,7 @@ Module to test the decision tree class.
 import pytest
 import random
 
+
 @pytest.fixture
 def decision_tree():
     """
@@ -26,6 +27,17 @@ gini_table = []
 for i in range(100):
     new_randy = random.randint(1, 20)
     gini_table.append((range(new_randy), 1 - sum((1 / new_randy)**2 for _ in range(new_randy))))
+
+
+predictions = [
+    {'petal length (cm)': 1.4, 'petal width (cm)': 0.2},
+    {'petal length (cm)': 1.4, 'petal width (cm)': 0.2},
+    {'petal length (cm)': 1.3, 'petal width (cm)': 0.2},
+    {'petal length (cm)': 1.5, 'petal width (cm)': 0.2},
+    {'petal length (cm)': 1.4, 'petal width (cm)': 0.2},
+    {'petal length (cm)': 5.5, 'petal width (cm)': 1.8},
+    {'petal length (cm)': 4.5, 'petal width (cm)': 1.6},
+]
 
 
 def test_instantiation():
@@ -219,3 +231,16 @@ def test_right_children_right(loaded_tree):
             not leaf.left,
             not leaf.right
         ])
+
+
+def test_predictions(loaded_tree):
+    """
+    Ensure we get expected predictions.
+    """
+    assert loaded_tree.predict(predictions) == ['setosa',
+                                                'setosa',
+                                                'setosa',
+                                                'setosa',
+                                                'setosa',
+                                                'virginica',
+                                                'versicolor']
