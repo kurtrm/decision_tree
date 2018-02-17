@@ -185,3 +185,37 @@ def test_right_leaf_attributes(loaded_tree):
             leaf.left,
             leaf.right
         ])
+
+
+def test_right_children_left(loaded_tree):
+    """
+    Look at the children of the right node.
+    """
+    leaf = loaded_tree.root.right.left
+    assert all([
+            leaf.samples_count == 54,
+            leaf.values,
+            leaf.classification == 'versicolor',
+            not leaf.threshold,
+            not leaf.feature,
+            leaf.gini == pytest.approx(0.168, .1),
+            not leaf.left,
+            not leaf.right
+        ])
+
+
+def test_right_children_right(loaded_tree):
+    """
+    Look at the children of the right node.
+    """
+    leaf = loaded_tree.root.right.right
+    assert all([
+            leaf.samples_count == 46,
+            leaf.values,
+            leaf.classification == 'virginica',
+            not leaf.threshold,
+            not leaf.feature,
+            leaf.gini == pytest.approx(0.043, .1),
+            not leaf.left,
+            not leaf.right
+        ])
