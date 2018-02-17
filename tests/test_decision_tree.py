@@ -168,3 +168,20 @@ def test_left_leaf_attributes(loaded_tree):
             not leaf.left,
             not leaf.right
         ])
+
+
+def test_right_leaf_attributes(loaded_tree):
+    """
+    Look at the right child of the root node.
+    """
+    leaf = loaded_tree.root.right
+    assert all([
+            leaf.samples_count == 100,
+            leaf.values,
+            leaf.classification == 'versicolor',
+            leaf.threshold == pytest.approx(1.75, .1),
+            leaf.feature == 'petal width (cm)',
+            leaf.gini == .5,
+            leaf.left,
+            leaf.right
+        ])
