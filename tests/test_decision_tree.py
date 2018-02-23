@@ -244,3 +244,15 @@ def test_predictions(loaded_tree):
                                                 'setosa',
                                                 'virginica',
                                                 'versicolor']
+
+
+def test_id3(decision_tree):
+    """
+    For now, assert that we get None when trying to train a tree using
+    the id3 algorithm.
+    """
+    from src.decision_tree import DecisionTree
+    from tests.iris_petal_data import iris_data
+    tree = DecisionTree()
+    tree.train(iris_data, method='entropy')
+    assert tree.root is None
