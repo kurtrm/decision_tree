@@ -123,7 +123,7 @@ class DecisionTree:
                        for p in label_counts
                        if p)
 
-    def _entropy(self, labels):
+    def _entropy(self, labels):  # pragma: no cover
         """
         Calculates entropy for a set of labels.
         """
@@ -146,7 +146,7 @@ class DecisionTree:
         num_labels = len(Counter(labels))
         return 1 - 1/num_labels if num_labels else 0
 
-    def _id3(self, labeled_data):
+    def _id3(self, labeled_data):  # pragma: no cover
         """
         Builds a decision tree using the ID3 algorithm.
         """
